@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import datetime as dt
-import re
 from time import sleep
+import re
+import pushbullet
 from urllib import urlopen
 from bs4 import BeautifulSoup as bs
 
@@ -26,5 +27,5 @@ def week_of_shows(*shows):
     yield check_shows(day,*shows)
 
 shws = [x.strip() for x in open(".tell_show","r").readlines()]
-for i in week_of_shows(*shws):
-  print i
+results = "\n".join([ msg for msg in week_of_shows(*shws) if msg ])
+pushbullet.note("New TV this week!", results)
