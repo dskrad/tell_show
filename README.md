@@ -8,4 +8,10 @@ The script can be run manually, or you can automate the script with `crontab -e`
 
 You can have the script send you results to your email or phone (Twitter, Pushbullet, etc). I did not want to share my personal API keys, so I use os environment variables. 
 
-Make sure to have `export PUSHBULLET_APIKEY=your_api_key` and `export PUSHBULLET_IPHONE=your_device_key` in your `.bashrc` file. 
+Make sure to have `export PUSHBULLET_APIKEY=your_api_key` and `export PUSHBULLET_IPHONE=your_device_key` in your `.bashrc` or `.profile` file. 
+
+Depending on your unix/linux environment, the crontab shell may not load the environment variables. To do so, just change crontab line to something like this 
+
+`. .profile; /home/pi/bin/tell_show.py`
+
+The "dot" before the `.profile` sources the file so the correct environment variables will be set.
