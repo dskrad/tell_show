@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import requests as r
 import sys
-import os
-key = os.environ['PUSHBULLET_APIKEY']
-device = os.environ['PUSHBULLET_IPHONE']
+from secrets import PUSHBULLET_APIKEY, PUSHBULLET_IPHONE 
+key = PUSHBULLET_APIKEY
+device = PUSHBULLET_IPHONE
 url = "https://api.pushbullet.com/api/pushes"
 
 def note(title, body):
@@ -11,8 +11,7 @@ def note(title, body):
     "device_iden": device,
     "type": "note",
     "title": title,
-    "body": body
-  }
+    "body": body}
   r.post(url, auth=(key,""), data=params)
 
 def link(title, url):
@@ -20,8 +19,7 @@ def link(title, url):
     "device_iden": device,
     "type": "link",
     "title": title,
-    "url": url 
-  }
+    "url": url}
   r.post(url, auth=(key,""), data=params)
 
 def main():
