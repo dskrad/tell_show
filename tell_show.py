@@ -29,3 +29,5 @@ def week_of_shows(*shows):
 shws = [x.strip() for x in open(".tell_show","r").readlines()]
 results = "\n".join([ msg for msg in week_of_shows(*shws) if msg ])
 pushbullet.note("New TV this week!", results)
+print "Results"
+print results
