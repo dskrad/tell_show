@@ -1,38 +1,61 @@
 #!/usr/bin/env python
-import requests as r
-import sys
-from secrets import PUSHBULLET_APIKEY, PUSHBULLET_IPHONE 
-key = PUSHBULLET_APIKEY
-device = PUSHBULLET_IPHONE
-url = "https://api.pushbullet.com/api/pushes"
+"""Pushbullet.py
+Usage:
+  pushbullet.py note <title> [<body>] [<email>]
+  pushbullet.py link <title> <url> [<email>]
+  pushbullet.py list <title> <list_items> ...
+  pushbullet.py --version
+  pushbullet.py (-h | --help)
 
-def note(title, body):
+Options:
+  -h --help   Show this screen
+  --version   Show version
+"""
+import requests as R
+import sys
+from secrets import PUSHBULLET_APIKEY
+key = PUSHBULLET_APIKEY
+#device = os.environ['PUSHBULLET_IPHONE']
+URL = "https://api.pushbullet.com/v2/pushes"
+
+def note(title, body="", email=""):
   params = {
-    "device_iden": device,
+    #"device_iden": device,
     "type": "note",
     "title": title,
-    "body": body}
-  r.post(url, auth=(key,""), data=params)
+    "body": body,
+    "email": email}
+  R.post(URL, params, auth=(key,""))
 
-def link(title, url):
+def link(title, url, email=""):
   params = {
-    "device_iden": device,
+    #"device_iden": device,
     "type": "link",
     "title": title,
-    "url": url}
-  r.post(url, auth=(key,""), data=params)
+    "url": url,
+    "email": email}
+  R.post(URL, params, auth=(key,""))
+
+def list_(title, items=[], email=""):
+  params = {
+    #"device_iden": device,
+    "type": "list",
+    "title": title,
+    "items": items,
+    "email": email}
+  r = R.post(URL, json=params, auth=(key, ""))
 
 def main():
-  if len(sys.argv) != 4:
-    print "Incorrect number of args. Usage:"
-    print "\tpushbullet note note_title note_body"
-    print "\tpushbullet link title url"
-  else:
-    ntype, title, url_body = sys.argv[1:]
-    if ntype == "note":
-      note(title, url_body)
-    if ntype == "link":
-      link(title, url_body)
+  if args["note"]:
+    note(args['<title>'], args['<body>'],
+         args['<email>'])
+  elif args["link"]:
+    link(args['<title>'], args['<url>'],
+         args['<email>'])
+  elif args["list"]:
+    list_(args['<title>'], args['<list_items>'])
 
 if __name__ == "__main__":
+  from docopt import docopt
+  args = docopt(__doc__, version="0.8")
   main()
