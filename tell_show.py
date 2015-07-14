@@ -19,7 +19,7 @@ def check_shows(date,*shows):
     if regmatch != None:
       msg.append(regmatch.group(1).upper())
   if len(msg) > 1:  
-    return " * ".join(msg) 
+    return "\n  * ".join(msg) 
 
 def week_of_shows(*shows):
   for i in range(7):
